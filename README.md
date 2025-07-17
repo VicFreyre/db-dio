@@ -1,7 +1,6 @@
-# Projeto: Sistema de Contas com Clientes PF/PJ, Pagamento e Entrega
+# DB Sistema E-COMMERCE
 
 ## Descrição
-
 Este projeto implementa um modelo de banco de dados para gerenciar clientes, contas, formas de pagamento e entregas, conforme os seguintes requisitos:
 
 - **Clientes** podem ser Pessoa Física (PF) ou Pessoa Jurídica (PJ), mas nunca ambos ao mesmo tempo.  
