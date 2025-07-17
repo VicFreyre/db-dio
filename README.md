@@ -13,48 +13,93 @@ Este projeto implementa um modelo de banco de dados para gerenciar clientes, con
 
 ## Modelo Conceitual – Diagrama Entidade-Relacionamento (ER)
 
-```mermaid
-erDiagram
-    CLIENTE {
-        int id_cliente PK
-        char tipo_cliente ("PF" ou "PJ")
-        string nome
-        string telefone
-        string email
-        string endereco
-        char cpf
-        date data_nascimento
-        char cnpj
-        string razao_social
-    }
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ef90dd8a-4a93-4d01-97ea-dba268ac3b08" alt="image" width="773" height="739" />
+</p>
 
-    CONTA {
-        int id_conta PK
-        decimal saldo
-        date data_abertura
-        int id_cliente FK
-    }
+## Entidades e Atributos
 
-    FORMAPAGAMENTO {
-        int id_forma_pagamento PK
-        string tipo_pagamento
-        string dados_pagamento
-    }
+### CLIENTE
 
-    CONTAPAGAMENTO {
-        int id_conta PK, FK
-        int id_forma_pagamento PK, FK
-    }
+| Atributo       | Tipo    | Descrição                     |
+|----------------|---------|-------------------------------|
+| `id_cliente`   | PK      | Identificador do cliente       |
+| `nome`         | string  | Nome do cliente               |
+| `telefone`     | string  | Telefone de contato           |
+| `email`        | string  | E-mail do cliente             |
+| `endereco`     | string  | Endereço completo             |
+| `tipo_cliente` | string  | Tipo: 'Física' ou 'Jurídica'  |
 
-    ENTREGA {
-        int id_entrega PK
-        int id_conta FK
-        string status
-        string codigo_rastreio
-        date data_entrega
-    }
+---
 
-    CLIENTE ||--o{ CONTA: possui
-    CONTA ||--o{ CONTAPAGAMENTO: associa
-    FORMAPAGAMENTO ||--o{ CONTAPAGAMENTO: associada
-    CONTA ||--o{ ENTREGA: realiza
+### PESSOAFISICA
+
+| Atributo          | Tipo     | Descrição                  |
+|-------------------|----------|----------------------------|
+| `id_cliente`      | PK, FK   | Referência ao cliente       |
+| `cpf`             | string   | CPF da pessoa física        |
+| `data_nascimento` | date     | Data de nascimento          |
+
+---
+
+### PESSOAJURIDICA
+
+| Atributo          | Tipo     | Descrição                  |
+|-------------------|----------|----------------------------|
+| `id_cliente`      | PK, FK   | Referência ao cliente       |
+| `cnpj`            | string   | CNPJ da pessoa jurídica     |
+| `razao_social`    | string   | Razão social da empresa     |
+
+---
+
+### CONTA
+
+| Atributo          | Tipo     | Descrição                  |
+|-------------------|----------|----------------------------|
+| `id_conta`        | PK       | Identificador da conta      |
+| `saldo`           | decimal  | Saldo atual da conta        |
+| `data_abertura`   | date     | Data de abertura            |
+| `id_cliente`      | FK       | Referência ao cliente       |
+
+---
+
+### FORMAPAGAMENTO
+
+| Atributo          | Tipo     | Descrição                  |
+|-------------------|----------|----------------------------|
+| `id_forma_pagamento` | PK     | Identificador da forma      |
+| `tipo_pagamento`  | string   | Tipo (Cartão, Pix, etc.)    |
+| `dados_pagamento` | string   | Informações detalhadas      |
+
+---
+
+### CONTAPAGAMENTO (Entidade Associativa)
+
+| Atributo          | Tipo     | Descrição                  |
+|-------------------|----------|----------------------------|
+| `id_conta`        | PK, FK   | Referência à conta          |
+| `id_forma_pagamento` | PK, FK | Referência à forma de pagamento |
+
+---
+
+### ENTREGA
+
+| Atributo           | Tipo     | Descrição                  |
+|--------------------|----------|----------------------------|
+| `id_entrega`       | PK       | Identificador da entrega    |
+| `id_conta`         | FK       | Referência à conta          |
+| `status`           | string   | Status da entrega           |
+| `codigo_rastreio`  | string   | Código de rastreio          |
+| `data_entrega`     | date     | Data prevista ou realizada  |
+
+---
+
+## Relacionamentos
+
+| Entidade Origem | Tipo   | Entidade Destino  | Descrição                         |
+|-----------------|--------|-------------------|-----------------------------------|
+| CLIENTE         | 1:1    | PESSOAFISICA      | Cliente **é** pessoa física       |
+| CLIENTE         | 1:1    | PESSOAJURIDICA    | Cliente **é** pessoa jurídica     |
+| CLIENTE         | 1:N    | CONTA             | Cliente **possui** conta(s)       |
+| CONTA           | N:N    | FORMAPAGAMENTO    | Associado por CONTAPAGAMENTO      |
+| CONTA           | 1:N    | ENTREGA           | Conta **gera** entregas           |
