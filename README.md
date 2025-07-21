@@ -1,4 +1,4 @@
-# DB Sistema E-COMMERCE
+# Projeto de Banco de Dados - Randstad Bootcamp
 
 ## Descrição
 Este projeto implementa um modelo de banco de dados para gerenciar clientes, contas, formas de pagamento e entregas, conforme os seguintes requisitos:
